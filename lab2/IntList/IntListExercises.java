@@ -29,6 +29,7 @@ public class IntListExercises {
             if (firstDigitEqualsLastDigit(max(p))) {
                 p.first = 0;
             }
+            p = p.rest;
         }
     }
 
