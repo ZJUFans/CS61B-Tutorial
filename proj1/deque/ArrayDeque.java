@@ -21,7 +21,7 @@ public class ArrayDeque<T> {
 
     public void addFirst(T item) {
         if (start1 + size1 >= array1.length - 1) {
-            resize(array1, size1 * 2);
+            resize(array1, Math.max(size1 * 2, size1 + 8));
         }
         array1[start1 + size1] = item;
         size1 += 1;
@@ -29,15 +29,15 @@ public class ArrayDeque<T> {
 
     public void addLast(T item) {
         if (start2 + size2 >= array2.length - 1) {
-            resize(array2, size2 * 2);
+            resize(array2, Math.max(size2 * 2, size2 + 8));
         }
         array2[start2 + size2] = item;
         size2 += 1;
     }
 
     public T removeFirst() {
-        if (size1 >= 16 && array1.length / size1 < 0.4) {
-            resize(array1, (int) size1 / 2);
+        if (array1.length >= 16 && (size1 / array1.length) <= 0.25) {
+            resize(array1, (int) (2 * size1));
         }
         if (size1 > 0) {
             T res = array1[start1 + size1 - 1];
@@ -55,8 +55,8 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if (size2 >= 16 && array2.length / size2 < 0.4) {
-            resize(array2, (int) size2 / 2);
+        if (array2.length >= 16 && (size2 / array2.length) <= 0.25) {
+            resize(array2, (int) (2 * size2));
         }
         if (size2 > 0) {
             T res = array2[start2 + size2 - 1];

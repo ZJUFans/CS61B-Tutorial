@@ -1,5 +1,6 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -133,7 +134,40 @@ public class ArrayDequeTest {
         for (double i = 999999; i > 500000; i--) {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
+    }
 
+    @Test
+    public void randomizedTest() {
+        ArrayDeque<Integer> L = new ArrayDeque<>();
+        LinkedListDeque<Integer> B = new LinkedListDeque<>();
 
+        int N = 10000;
+        for (int i = 0; i < N; i += 1) {
+            int operationNumber = StdRandom.uniform(0, 5);
+            if (operationNumber == 0) {
+                // addLast
+                int randVal = StdRandom.uniform(0, 100);
+                L.addLast(randVal);
+                B.addLast(randVal);
+            } else if (operationNumber == 1) {
+                // size
+                int size = L.size();
+                assertEquals(size, B.size());
+            } else if (operationNumber == 4) {
+                int randVal = StdRandom.uniform(0, 100);
+                L.addFirst(randVal);
+                B.addFirst(randVal);
+            } else {
+                if (L.size() > 0) {
+                    if (operationNumber == 2) {
+                        Integer last = L.removeFirst();
+                        assertEquals(last, B.removeFirst());
+                    } else if (operationNumber == 3) {
+                        Integer last = L.removeLast();
+                        assertEquals(last, B.removeLast());
+                    }
+                }
+            }
+        }
     }
 }
