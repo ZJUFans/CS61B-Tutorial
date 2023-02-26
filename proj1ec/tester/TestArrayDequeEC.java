@@ -25,7 +25,7 @@ public class TestArrayDequeEC {
                 solution.addFirst(i);
                 str += "addFirst(" + i + ")\n";
             } else {
-                if (st.size() > 0) {
+                if (solution.size() > 0) {
                     if (numberBetweenZeroAndOne == 2){
                         Integer i1 = st.removeLast();
                         Integer i2 = solution.removeLast();
