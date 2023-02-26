@@ -11,7 +11,7 @@ public class TestArrayDequeEC {
     public void testStudentArrayDeque() {
         StudentArrayDeque<Integer> st = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> solution = new ArrayDequeSolution<>();
-        String str = "";
+        String str = "\n";
 
         for (int i = 0; i < 1000; i += 1) {
             double numberBetweenZeroAndOne = StdRandom.uniform(4);
@@ -29,12 +29,12 @@ public class TestArrayDequeEC {
                     if (numberBetweenZeroAndOne == 2){
                         Integer i1 = st.removeLast();
                         Integer i2 = solution.removeLast();
-                        str += "removeLast(): " + i1 + "\n";
+                        str += "removeLast()\n";
                         assertEquals(str, i2, i1);
                     } else if (numberBetweenZeroAndOne == 3){
                         Integer i1 = st.removeFirst();
                         Integer i2 = solution.removeFirst();
-                        str += "removeFirst(): " + i1 + "\n";
+                        str += "removeFirst()\n";
                         assertEquals(str, i2, i1);
                     }
                 }
