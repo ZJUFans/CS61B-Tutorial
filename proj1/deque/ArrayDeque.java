@@ -109,15 +109,63 @@ public class ArrayDeque<T> implements Deque<T>{
 
     @Override
     public void printDeque() {
-        for (int i = size1 - 1; i >= 0; i--) {
+        for (int i = start1 + size1 - 1; i >= start1; i--) {
             System.out.print(array1[i] + " ");
         }
 
-        for (int i = 0; i < size2; i++) {
+        for (int i = start2; i < start2 + size2; i++) {
             System.out.print(array2[i] + " ");
         }
 
         System.out.println();
     }
 
+    private class MyIterator<T> implements Iterator<T> {
+        private int index;
+        private int iter_size;
+        public MyIterator() {
+            if(size1 == 0) {
+                index = start2;
+            } else {
+                index = start1 + size1 - 1;
+            }
+            iter_size = 0;
+        }
+        @Override
+        public boolean hasNext() {
+            if (iter_size == size1 + size2) return false;
+            return true;
+        }
+
+        @Override
+        public T next() {
+            T res;
+            if (iter_size >= size1) {
+                res = (T) array2[index];
+                index++;
+            } else {
+                res = (T) array1[index];
+                index--;
+                if (iter_size + 1 == size1) index = start2;
+            }
+
+            iter_size += 1;
+            return res;
+        }
+    }
+    public Iterator<T> iterator() {
+        return new MyIterator<>();
+    }
+
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if (o instanceof ArrayDeque q) {
+            if (this.size() != q.size()) return false;
+            for (int i = 0; i < size(); i++) {
+                if (!get(i).equals(q.get(i))) return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

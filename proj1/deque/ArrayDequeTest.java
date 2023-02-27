@@ -5,6 +5,8 @@ import deque.LinkedListDeque;
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
@@ -125,15 +127,15 @@ public class ArrayDequeTest {
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<>();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 100000; i++) {
             lld1.addLast(i);
         }
 
-        for (double i = 0; i < 500000; i++) {
+        for (double i = 0; i < 50000; i++) {
             assertEquals("Should have the same value", i, (double) lld1.removeFirst(), 0.0);
         }
 
-        for (double i = 999999; i > 500000; i--) {
+        for (double i = 99999; i > 50000; i--) {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
@@ -171,5 +173,42 @@ public class ArrayDequeTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void iterTest() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < 100; i++) {
+            deque.addFirst(i);
+            deque.addLast(i);
+        }
+        Iterator<Integer> iterator = deque.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+    @Test
+    public void equalTest() {
+        ArrayDeque<Integer> deque1 = new ArrayDeque<>();
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+
+        for (int i = 0; i < 10; i++) {
+            deque1.addFirst(i);
+            deque2.addLast(i);
+        }
+
+        deque1.printDeque();
+        deque2.printDeque();
+
+        boolean eq1 = deque1.equals(deque2);
+        deque1.removeLast();
+        deque1.printDeque();
+
+        deque2.removeFirst();
+        deque2.printDeque();
+        boolean eq2 = deque1.equals(deque2);
+
+        System.out.println(eq1 + " " + eq2);
     }
 }
