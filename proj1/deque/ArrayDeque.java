@@ -22,7 +22,7 @@ public class ArrayDeque<T> implements Deque<T>{
     @Override
     public void addFirst(T item) {
         if (start1 + size1 >= array1.length - 1) {
-            resize(array1, Math.max(size1 * 2, size1 + 8));
+            resize(array1, (int) Math.max(size1 * 2, size1 + 8));
         }
         array1[start1 + size1] = item;
         size1 += 1;
@@ -31,7 +31,7 @@ public class ArrayDeque<T> implements Deque<T>{
     @Override
     public void addLast(T item) {
         if (start2 + size2 >= array2.length - 1) {
-            resize(array2, Math.max(size2 * 2, size2 + 8));
+            resize(array2, (int) Math.max(size2 * 2, size2 + 8));
         }
         array2[start2 + size2] = item;
         size2 += 1;
@@ -159,7 +159,8 @@ public class ArrayDeque<T> implements Deque<T>{
 
     public boolean equals(Object o) {
         if(this == o) return true;
-        if (o instanceof ArrayDeque q) {
+        if (getClass().equals(o.getClass())) {
+            ArrayDeque<T> q = (ArrayDeque) o;
             if (this.size() != q.size()) return false;
             for (int i = 0; i < size(); i++) {
                 if (!get(i).equals(q.get(i))) return false;

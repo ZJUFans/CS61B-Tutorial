@@ -161,7 +161,8 @@ public class LinkedListDeque<T> implements Deque<T>{
 
     public boolean equals(Object o) {
         if(this == o) return true;
-        if (o instanceof LinkedListDeque q) {
+        if (getClass().equals(o.getClass())) {
+            LinkedListDeque q = (LinkedListDeque) o;
             if (this.size() != q.size()) return false;
             for (int i = 0; i < size(); i++) {
                 if (!get(i).equals(q.get(i))) return false;
