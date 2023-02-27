@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T>{
     T[] array1;
     T[] array2;
     int start1;
@@ -19,6 +19,7 @@ public class ArrayDeque<T> {
         size2 = 0;
     }
 
+    @Override
     public void addFirst(T item) {
         if (start1 + size1 >= array1.length - 1) {
             resize(array1, Math.max(size1 * 2, size1 + 8));
@@ -27,6 +28,7 @@ public class ArrayDeque<T> {
         size1 += 1;
     }
 
+    @Override
     public void addLast(T item) {
         if (start2 + size2 >= array2.length - 1) {
             resize(array2, Math.max(size2 * 2, size2 + 8));
@@ -35,6 +37,7 @@ public class ArrayDeque<T> {
         size2 += 1;
     }
 
+    @Override
     public T removeFirst() {
         if (array1.length >= 16 && (size1 / array1.length) <= 0.25) {
             resize(array1, (int) (2 * size1));
@@ -54,6 +57,7 @@ public class ArrayDeque<T> {
         }
     }
 
+    @Override
     public T removeLast() {
         if (array2.length >= 16 && (size2 / array2.length) <= 0.25) {
             resize(array2, (int) (2 * size2));
@@ -73,7 +77,7 @@ public class ArrayDeque<T> {
         }
     }
 
-    public void resize(T[] array, int new_size) {
+    private void resize(T[] array, int new_size) {
         T[] a = (T[]) new Object[new_size];
         if (array == array1) {
             for (int i = 0; i < Math.min(size1, new_size); i++) {
@@ -90,20 +94,20 @@ public class ArrayDeque<T> {
         }
     }
 
+    @Override
     public int size() {
         return size1 + size2;
     }
 
-    public boolean isEmpty() {
-        return size1 == 0 && size2 == 0;
-    }
 
+    @Override
     public T get(int index) {
         if(index >= size1 + size2) return null;
         if (index >= size1) return array2[index - size1];
         return array1[size1 - index - 1];
     }
 
+    @Override
     public void printDeque() {
         for (int i = size1 - 1; i >= 0; i--) {
             System.out.print(array1[i] + " ");
