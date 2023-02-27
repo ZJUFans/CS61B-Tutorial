@@ -1,7 +1,5 @@
 package deque;
 
-import deque.ArrayDeque;
-import deque.LinkedListDeque;
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
@@ -127,15 +125,15 @@ public class ArrayDequeTest {
         System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<>();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             lld1.addLast(i);
         }
 
-        for (double i = 0; i < 50000; i++) {
+        for (double i = 0; i < 500000; i++) {
             assertEquals("Should have the same value", i, (double) lld1.removeFirst(), 0.0);
         }
 
-        for (double i = 99999; i > 50000; i--) {
+        for (double i = 999999; i > 500000; i--) {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
     }
@@ -147,7 +145,7 @@ public class ArrayDequeTest {
 
         int N = 10000;
         for (int i = 0; i < N; i += 1) {
-            int operationNumber = StdRandom.uniform(0, 5);
+            int operationNumber = StdRandom.uniform(0, 6);
             if (operationNumber == 0) {
                 // addLast
                 int randVal = StdRandom.uniform(0, 100);
@@ -169,6 +167,9 @@ public class ArrayDequeTest {
                     } else if (operationNumber == 3) {
                         Integer last = L.removeLast();
                         assertEquals(last, B.removeLast());
+                    } else if (operationNumber == 5) {
+                        int randVal = StdRandom.uniform(0, L.size());
+                        assertEquals(L.get(randVal), B.get(randVal));
                     }
                 }
             }
@@ -195,7 +196,7 @@ public class ArrayDequeTest {
 
         for (int i = 0; i < 10; i++) {
             deque1.addFirst(i);
-            deque2.addLast(i);
+            deque2.addFirst(i);
         }
 
         deque1.printDeque();
@@ -211,4 +212,5 @@ public class ArrayDequeTest {
 
         System.out.println(eq1 + " " + eq2);
     }
+
 }

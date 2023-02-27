@@ -159,7 +159,7 @@ public class LinkedListDequeTest {
 
         for (int i = 0; i < 10; i++) {
             deque1.addFirst(i);
-            deque2.addLast(i);
+            deque2.addFirst(i);
         }
 
         deque1.printDeque();
