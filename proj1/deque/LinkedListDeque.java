@@ -11,11 +11,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         TNode<T> prev;
         TNode<T> next;
 
-        public TNode() {
+        TNode() {
 
         }
 
-        public TNode(T value) {
+        TNode(T value) {
             this.value = value;
         }
     }

@@ -3,12 +3,36 @@ package deque;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
-    protected T[] array1;
-    protected T[] array2;
-    protected int start1;
-    protected int size1;
-    protected int start2;
-    protected int size2;
+    private T[] array1;
+    private T[] array2;
+    private int start1;
+    private int size1;
+    private int start2;
+    private int size2;
+    public T[] getArray1() {
+        return array1;
+    }
+
+    public T[] getArray2() {
+        return array2;
+    }
+
+    public int getStart1() {
+        return start1;
+    }
+
+    public int getSize1() {
+        return size1;
+    }
+
+    public int getStart2() {
+        return start2;
+    }
+
+    public int getSize2() {
+        return size2;
+    }
+
 
     public ArrayDeque() {
         array1 = (T[]) new Object[8];
@@ -102,7 +126,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T get(int index) {
-        if(index >= size1 + size2) {
+        if (index >= size1 + size2) {
             return null;
         } else if (index >= size1) {
             return array2[index - size1 + start2];

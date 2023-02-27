@@ -176,5 +176,18 @@ public class LinkedListDequeTest {
         System.out.println(eq1 + " " + eq2);
     }
 
+    @Test
+    public void getRecTest() {
+        LinkedListDeque<Integer> deque = new LinkedListDeque<>();
+        for (int i = 0; i < 1000; i++) {
+            deque.addFirst(i);
+        }
+        for (int i = 10; i < 100; i++) {
+            int i1 = deque.get(i);
+            int i2 = deque.getRecursive(i);
+            assertEquals(i1, i2);
+        }
+    }
+
 
 }
