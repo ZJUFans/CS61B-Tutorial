@@ -65,7 +65,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
-        if (array.length > 16 && ((double)size / array.length) <= 0.25) {
+        if (array.length > 16 && ((double) size / array.length) <= 0.25) {
             resize(2 * size);
         }
         int firstIndex = getFirstIndex();
@@ -82,7 +82,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
-        if (array.length > 16 && ((double)size / array.length) <= 0.25) {
+        if (array.length > 16 && ((double) size / array.length) <= 0.25) {
             resize(2 * size);
         }
         int lastIndex = getLastIndex();
