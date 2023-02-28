@@ -21,7 +21,7 @@ public class MaxArrayDequeTest {
         public int compare(Integer o1, Integer o2) {
             int i1 = (int) o1;
             int i2 = (int) o2;
-            return i2 - i1;
+            return i1 - i2;
         }
     }
 }

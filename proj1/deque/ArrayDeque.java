@@ -3,184 +3,145 @@ package deque;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
-    private T[] array1;
-    private T[] array2;
-    private int start1;
-    private int size1;
-    private int start2;
-    private int size2;
-    public T[] getArray1() {
-        return array1;
-    }
-
-    public T[] getArray2() {
-        return array2;
-    }
-
-    public int getStart1() {
-        return start1;
-    }
-
-    public int getSize1() {
-        return size1;
-    }
-
-    public int getStart2() {
-        return start2;
-    }
-
-    public int getSize2() {
-        return size2;
-    }
-
+    private T[] array;
+    private int nextFirst;
+    private int nextLast;
+    private int size;
 
     public ArrayDeque() {
-        array1 = (T[]) new Object[8];
-        array2 = (T[]) new Object[8];
-        start1 = 0;
-        size1 = 0;
-        start2 = 0;
-        size2 = 0;
+        array = (T[]) new Object[8];
+        nextFirst = 3;
+        nextLast = 4;
+        size = 0;
     }
 
     @Override
     public void addFirst(T item) {
-        if (start1 + size1 >= array1.length - 1) {
-            resize(array1, Math.max(size1 * 2, size1 + 8));
+        if (nextFirst == nextLast) {
+            resize(2 * array.length);
         }
-        array1[start1 + size1] = item;
-        size1 += 1;
+        array[nextFirst] = item;
+        nextFirst = getNextFirst();
+        size++;
+    }
+
+    private int getNextFirst() {
+        int res = nextFirst - 1;
+        if (res < 0) {
+            res += array.length;
+        }
+        return res;
+    }
+
+    private int getFirstIndex() {
+        return (nextFirst + 1) % array.length;
     }
 
     @Override
     public void addLast(T item) {
-        if (start2 + size2 >= array2.length - 1) {
-            resize(array2, Math.max(size2 * 2, size2 + 8));
+        if (nextFirst == nextLast) {
+            resize(2 * size);
         }
-        array2[start2 + size2] = item;
-        size2 += 1;
+        array[nextLast] = item;
+        nextLast = getNextLast();
+        size++;
+    }
+
+    private int getNextLast() {
+        int res = nextLast + 1;
+        if (res >= array.length) {
+            res -= array.length;
+        }
+        return res;
+    }
+
+    private int getLastIndex() {
+        return (nextLast - 1 + array.length) % array.length;
     }
 
     @Override
     public T removeFirst() {
-        if (array1.length >= 16 && (size1 / array1.length) <= 0.25) {
-            resize(array1, 2 * size1);
-        }
-        if (size1 > 0) {
-            T res = array1[start1 + size1 - 1];
-            array1[start1 + size1 - 1] = null;
-            size1 -= 1;
-            return res;
-        } else if (size2 > 0) {
-            T res = array2[start2];
-            size2 -= 1;
-            start2 += 1;
-            return res;
-        } else {
+        if (size == 0) {
             return null;
         }
+
+        if (array.length > 16 && ((double)size / array.length) <= 0.25) {
+            resize(2 * size);
+        }
+        int firstIndex = getFirstIndex();
+        T res = array[firstIndex];
+        array[firstIndex] = null;
+        nextFirst = firstIndex;
+        size--;
+        return res;
     }
 
     @Override
     public T removeLast() {
-//        if (array2.length >= 16 && (size2 / array2.length) <= 0.25) {
-//            resize(array2, 2 * size2);
-//        }
-        if (size2 > 0) {
-            T res = array2[start2 + size2 - 1];
-            array2[start2 + size2 - 1] =  null;
-            size2 -= 1;
-            return res;
-        } else if (size1 > 0) {
-            T res = array1[start1];
-            size1 -= 1;
-            start1 += 1;
-            return res;
-        } else {
+        if (size == 0) {
             return null;
         }
+
+        if (array.length > 16 && ((double)size / array.length) <= 0.25) {
+            resize(2 * size);
+        }
+        int lastIndex = getLastIndex();
+        T res = array[lastIndex];
+        array[lastIndex] = null;
+        nextLast = lastIndex;
+        size--;
+        return res;
     }
 
-    private void resize(T[] array, int newSize) {
-        T[] a = (T[]) new Object[newSize];
-        if (array == array1) {
-            for (int i = 0; i < Math.min(size1, newSize); i++) {
-                a[i] = array[i + start1];
-            }
-            start1 = 0;
-            array1 = a;
-        } else {
-            for (int i = 0; i < Math.min(size2, newSize); i++) {
-                a[i] = array[i + start2];
-            }
-            start2 = 0;
-            array2 = a;
+    private void resize(int newSize) {
+        T[] newArray = (T[]) new Object[newSize];
+        int start = getFirstIndex();
+        for (int i = start; i < size + start; i++) {
+            newArray[i - start] = array[i % array.length];
         }
+        array = newArray;
+        nextFirst = newSize - 1;
+        nextLast = size;
     }
 
     @Override
     public int size() {
-        return size1 + size2;
+        return size;
     }
 
 
     @Override
     public T get(int index) {
-        if (index >= size1 + size2) {
-            return null;
-        } else if (index >= size1) {
-            return array2[index - size1 + start2];
-        }
-        return array1[size1 - index - 1 + start1];
+        int firstIndex = getFirstIndex();
+        return array[(firstIndex + index) % array.length];
     }
 
     @Override
     public void printDeque() {
-        for (int i = start1 + size1 - 1; i >= start1; i--) {
-            System.out.print(array1[i] + " ");
+        int start = getFirstIndex();
+        for (int i = start; i < size + start; i++) {
+            System.out.print(array[i % array.length] + " ");
         }
-
-        for (int i = start2; i < start2 + size2; i++) {
-            System.out.print(array2[i] + " ");
-        }
-
         System.out.println();
     }
 
     private class MyIterator<T> implements Iterator<T> {
-        private int index;
-        private int iterSize;
+        int index;
+        int iterSize;
         MyIterator() {
-            if (size1 == 0) {
-                index = start2;
-            } else {
-                index = start1 + size1 - 1;
-            }
+            index = getFirstIndex();
             iterSize = 0;
         }
         @Override
         public boolean hasNext() {
-            if (iterSize == size1 + size2) {
-                return false;
-            }
-            return true;
+            return iterSize < size;
         }
 
         @Override
         public T next() {
-            T res;
-            if (iterSize >= size1) {
-                res = (T) array2[index];
-                index++;
-            } else {
-                res = (T) array1[index];
-                index--;
-                if (iterSize + 1 == size1) {
-                    index = start2;
-                }
-            }
-
-            iterSize += 1;
+            T res = (T) array[index % array.length];
+            index++;
+            iterSize++;
             return res;
         }
     }
