@@ -85,6 +85,18 @@ public class Main {
                     throw Utils.error("Invalid number of arguments for: checkout");
                 }
                 break;
+            case "global-log":
+                validateNumArgs("global-log", args, 1);
+                globalLog();
+                break;
+            case "find":
+                validateNumArgs("find", args, 2);
+                find(args[1]);
+                break;
+            case "status":
+                validateNumArgs("status", args, 1);
+                status();
+                break;
             default:
                 throw Utils.error("Unknown command: ", args[0]);
         }

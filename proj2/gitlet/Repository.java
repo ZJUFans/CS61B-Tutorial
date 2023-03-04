@@ -201,4 +201,31 @@ public class Repository {
         writeContents(f, content);
     }
 
+    public static void globalLog() {
+        List<String> files = plainFilenamesIn(COMMIT_DIR);
+        for (String file : files) {
+            System.out.println("commit " + file);
+        }
+    }
+
+    public static void find(String msg) {
+        List<String> files = plainFilenamesIn(COMMIT_DIR);
+        boolean find = false;
+        for (String file : files) {
+            Commit commit = readObject(join(COMMIT_DIR, file), Commit.class);
+            String message = commit.getMessage();
+            if (msg.equals(message)) {
+                find = true;
+                System.out.println(file);
+            }
+        }
+        if (!find) {
+            throw error("Found no commit with that message.");
+        }
+    }
+
+    public static void status() {
+
+    }
+
 }
