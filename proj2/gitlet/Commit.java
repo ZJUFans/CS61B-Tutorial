@@ -2,9 +2,13 @@ package gitlet;
 
 // TODO: any imports you need here
 
+import java.io.File;
 import java.io.Serializable;
-import java.util.Date; // TODO: You'll likely use this in this class
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import static gitlet.Utils.*;
+import static gitlet.MyUtils.*;
 
 /** Represents a gitlet commit object.
  *  TODO: It's a good idea to give a description here of what else this Class
@@ -22,58 +26,62 @@ public class Commit implements Serializable {
      */
 
     /** The message of this Commit. */
-    private String message;
-    private String parent;
-    private String date;
-    private Map<String, String> containings;
+
+    private final Date date;
+    private final String message;
+    private final List<String> parents;
+    private final Map<String, String> tracked;
+    private final String id;
+    private final File file;
+
+    public Commit(String message, List<String> parents, Map<String, String> tracked) {
+        date = new Date();
+        this.message = message;
+        this.parents = parents;
+        this.tracked = tracked;
+        id = generateId();
+        file = getObjectFile(id);
+    }
+
+    public Commit() {
+        date = new Date(0);
+        message = "initial commit";
+        parents = new ArrayList<>();
+        tracked = new HashMap<>();
+        id = generateId();
+        file = getObjectFile(id);
+    }
+
+    private String generateId() {
+        return sha1(getTimestamp(), message, parents.toString(), tracked.toString());
+    }
+
+    public String getTimestamp() {
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
+        return dateFormat.format(date);
+    }
+
+    public static Commit fromFile(String id) {
+        return readObject(getObjectFile(id), Commit.class);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public List<String> getParents() {
+        return parents;
     }
 
-    public String getParent() {
-        return parent;
-    }
-
-    public void setParent(String parent) {
-        this.parent = parent;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public Map<String, String> getContainings() {
-        return containings;
-    }
-
-    public void setContainings(Map<String, String> containins) {
-        this.containings = containins;
-    }
-
-    /* TODO: fill in the rest of this class. */
-    public Commit(String message, String parent, String date, Map<String, String> containins) {
-        this.message = message;
-        this.parent = parent;
-        this.date = date;
-        this.containings = containins;
-    }
-
-    @Override
-    public String toString() {
-        return "Commit{" +
-                "message='" + message + '\'' +
-                ", parent='" + parent + '\'' +
-                ", date=" + date +
-                ", containings=" + containings +
-                '}';
+    public Map<String, String> getTracked() {
+        return tracked;
     }
 }

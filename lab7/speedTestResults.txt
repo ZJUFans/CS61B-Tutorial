@@ -1,0 +1,6 @@
+Enter # strings to insert into the maps: qwertyuijhgfdsazxcvg
+Please enter a positive integer: 10012
+class bstmap.ULLMap: 0.31 sec
+class bstmap.BSTMap: 0.01 sec
+Java's Built-in TreeMap: 0.01 sec
+Java's Built-in HashMap: 0.00 sec
